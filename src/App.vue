@@ -5,30 +5,11 @@
         <div class="container">
           <h1>{{ title }}</h1>
 
-          <div class="message" v-if="message">
-            <p>{{ message }}</p>
-          </div>
+          <message v-if="message" :message="message" />
 
-          <!-- new note -->
-          <div class="new-note">
-            <input v-model="note.title" type="text" />
-            <textarea v-model="note.descr"></textarea>
-            <button @click="addNote">New note</button>
-          </div>
+          <newNote :note="note" @addNote="addNote" />
 
-          <!-- note list -->
-          <div class="notes">
-            <div class="note" v-for="(note, index) in notes" :key="index">
-              <div class="note-header">
-                <p>{{ note.title }}</p>
-              </div>
-
-              <div class="note-body">
-                <p>{{ note.descr }}</p>
-                <span>{{ note.date }}</span>
-              </div>
-            </div>
-          </div>
+          <notes :notes="notes" />
         </div>
       </section>
     </div>
@@ -36,7 +17,16 @@
 </template>
 
 <script>
+import message from "@/components/Message.vue";
+import newNote from "@/components/NewNote.vue";
+import notes from "@/components/Notes.vue";
+
 export default {
+  components: {
+    message,
+    newNote,
+    notes
+  },
   data() {
     return {
       title: "Notes App",
