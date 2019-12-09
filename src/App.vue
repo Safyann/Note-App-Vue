@@ -9,9 +9,14 @@
           <!-- new note -->
           <newNote :note="note" @addNote="addNote" />
 
-          <!-- title -->
-          <div class="note-header">
+          <div class="note-header" style="margin: 36px 0">
+            <!-- title -->
             <h1>{{ title }}</h1>
+
+            <!-- search -->
+
+            <search :value="search" placeholder="Find your note" @search="search = $event" />
+            <!-- icons controls -->
             <div class="icons">
               <svg
                 :class="{active: grid}"
@@ -58,7 +63,7 @@
           </div>
 
           <!-- note list -->
-          <notes :notes="notes" :grid="grid" @remove="removeNote" />
+          <notes :notes="notesFilter" :grid="grid" @remove="removeNote" />
         </div>
       </section>
     </div>
@@ -69,16 +74,20 @@
 import message from "@/components/Message.vue";
 import newNote from "@/components/NewNote.vue";
 import notes from "@/components/Notes.vue";
+import search from "@/components/Search.vue";
 
 export default {
   components: {
     message,
     newNote,
-    notes
+    notes,
+    search
   },
+
   data() {
     return {
       title: "Notes App",
+      search: "",
       message: null,
       grid: true,
       note: {
@@ -103,6 +112,26 @@ export default {
         }
       ]
     };
+  },
+
+  computed: {
+    notesFilter() {
+      let array = this.notes,
+        search = this.search;
+
+      if (!search) return array;
+
+      //Small
+      search = search.trim().toLowerCase();
+      //Filter
+      array = array.filter(function(item) {
+        if (item.title.toLowerCase().indexOf(search) !== -1) {
+          return item;
+        }
+      });
+      //Error
+      return array;
+    }
   },
 
   methods: {
