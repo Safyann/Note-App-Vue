@@ -1,9 +1,15 @@
 <template>
   <!-- note list -->
   <div class="notes">
-    <div class="note" :class="{full: !grid}" v-for="(note, index) in notes" :key="index">
+    <div
+      class="note"
+      :class="[note.importance, !grid ? 'full' : '']"
+      v-for="(note, index) in notes"
+      :key="index"
+    >
       <div class="note-header" :class="{full: !grid}">
-        <p>{{ note.title }}</p>
+        <p @click="edit = true" v-if="!edit">{{ note.title }}</p>
+        <input type="text" v-model="note.title" v-if="edit" />
         <p style="cursor:pointer" @click="removeNote(index)">X</p>
       </div>
 
@@ -17,6 +23,11 @@
 
 <script>
 export default {
+  data() {
+    return {
+      edit: false
+    };
+  },
   props: {
     notes: {
       type: Array,
@@ -59,6 +70,16 @@ export default {
   &.full {
     width: 100%;
     text-align: center;
+  }
+  &.very-important {
+    background: #fc5c65;
+    p,
+    span {
+      color: #ffffff;
+    }
+  }
+  &.important {
+    background: #fed330;
   }
 }
 

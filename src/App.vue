@@ -92,21 +92,25 @@ export default {
       grid: true,
       note: {
         title: "",
-        descr: ""
+        descr: "",
+        importance: "standart"
       },
       notes: [
         {
           title: "First node",
           descr: "Description for first note",
+          importance: "very-important",
           date: new Date(Date.now()).toLocaleString()
         },
         {
           title: "Second node",
+          importance: "important",
           descr: "Description for second note",
           date: new Date(Date.now()).toLocaleString()
         },
         {
           title: "Third node",
+          importance: "standart",
           descr: "Description for third note",
           date: new Date(Date.now()).toLocaleString()
         }
@@ -136,7 +140,7 @@ export default {
 
   methods: {
     addNote() {
-      let { title, descr } = this.note;
+      let { title, descr, importance } = this.note;
 
       if (title === "") {
         this.message = "title can`t be blank!";
@@ -146,12 +150,14 @@ export default {
       this.notes.push({
         title,
         descr,
+        importance,
         date: new Date(Date.now()).toLocaleString()
       });
 
       this.message = null;
       this.note.title = "";
       this.note.descr = "";
+      this.note.importance = "standart";
     },
     removeNote(index) {
       this.notes.splice(index, 1);

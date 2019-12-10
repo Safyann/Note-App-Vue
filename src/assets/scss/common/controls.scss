@@ -18,3 +18,15 @@ input,
 textarea {
   width: 100%;
 }
+select {
+  display: block;
+  padding: 16px 26px;
+  margin-bottom: 30px;
+  border-radius: 20px;
+  width: 100%;
+
+  option {
+    padding: 16px 26px;
+    border-radius: 20px;
+  }
+}
