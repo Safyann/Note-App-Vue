@@ -8,8 +8,15 @@
       :key="index"
     >
       <div class="note-header" :class="{full: !grid}">
-        <p @click="edit = true" v-if="!edit">{{ note.title }}</p>
-        <input type="text" v-model="note.title" v-if="edit" />
+        <p @click="editNote(note)" v-if="!note.edit">{{ note.title }}</p>
+        <input
+          type="text"
+          v-model="note.title"
+          v-else
+          @blur="updateNote(index, note)"
+          @keyup.enter="updateNote(index, note)"
+          @keyup.esc="cancelEdit(note)"
+        />
         <p style="cursor:pointer" @click="removeNote(index)">X</p>
       </div>
 
@@ -23,11 +30,6 @@
 
 <script>
 export default {
-  data() {
-    return {
-      edit: false
-    };
-  },
   props: {
     notes: {
       type: Array,
@@ -41,6 +43,18 @@ export default {
   methods: {
     removeNote(index) {
       this.$emit("remove", index);
+    },
+    updateNote(index, note) {
+      this.$emit("update", index, note.title);
+      note.edit = false;
+    },
+    editNote(note) {
+      this._originalNote = Object.assign({}, note);
+      note.edit = true;
+    },
+    cancelEdit(note) {
+      Object.assign(note, this._originalNote);
+      note.edit = false;
     }
   }
 };
@@ -80,6 +94,10 @@ export default {
   }
   &.important {
     background: #fed330;
+  }
+  input {
+    margin-bottom: 0;
+    margin-right: 20px;
   }
 }
 

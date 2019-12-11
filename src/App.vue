@@ -63,7 +63,13 @@
           </div>
 
           <!-- note list -->
-          <notes :notes="notesFilter" :grid="grid" @remove="removeNote" />
+          <notes
+            :notes="notesFilter"
+            :grid="grid"
+            @remove="removeNote"
+            @update="updateNote"
+            @cancelEdit="notUpdateNote"
+          />
         </div>
       </section>
     </div>
@@ -100,18 +106,21 @@ export default {
           title: "First node",
           descr: "Description for first note",
           importance: "very-important",
+          edit: false,
           date: new Date(Date.now()).toLocaleString()
         },
         {
           title: "Second node",
           importance: "important",
           descr: "Description for second note",
+          edit: false,
           date: new Date(Date.now()).toLocaleString()
         },
         {
           title: "Third node",
           importance: "standart",
           descr: "Description for third note",
+          edit: false,
           date: new Date(Date.now()).toLocaleString()
         }
       ]
@@ -161,6 +170,14 @@ export default {
     },
     removeNote(index) {
       this.notes.splice(index, 1);
+    },
+    updateNote(index, text) {
+      this.notes[index].title = text;
+      this.notes[index].date = new Date(Date.now()).toLocaleString();
+    },
+    notUpdateNote(index) {
+      console.log(this.notes[index].title);
+      this.notes[index].title = this.notes[index].title;
     }
   }
 };
