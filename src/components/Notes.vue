@@ -7,7 +7,7 @@
       v-for="(note, index) in notes"
       :key="index"
     >
-      <div class="note-header" :class="{full: !grid}">
+      <div class="note-header" :class="{ full: !grid }">
         <p @click="editNote(note)" v-if="!note.edit">{{ note.title }}</p>
         <input
           type="text"
@@ -42,10 +42,11 @@ export default {
   },
   methods: {
     removeNote(index) {
-      this.$emit("remove", index);
+      this.$store.dispatch("removeNote", index);
     },
     updateNote(index, note) {
-      this.$emit("update", index, note.title);
+      let text = note.title;
+      this.$store.dispatch("updateNote", { index, text });
       note.edit = false;
     },
     editNote(note) {

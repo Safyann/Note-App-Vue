@@ -10,9 +10,12 @@
       <div class="new-note__input">
         <label>Importance</label>
         <select v-model="note.importance">
-          <option value="standart">Standart</option>
-          <option value="important">Important</option>
-          <option value="very-important">Very important</option>
+          <option
+            v-for="imp in importance"
+            :key="imp.value"
+            :value="imp.value"
+            >{{ imp.title }}</option
+          >
         </select>
       </div>
     </div>
@@ -26,15 +29,31 @@
 
 <script>
 export default {
-  props: {
-    note: {
-      type: Object,
-      required: true
-    }
+  data() {
+    return {
+      message: null,
+      note: null,
+      importance: null
+    };
+  },
+  created() {
+    this.message = this.$store.getters.getMessage;
+    this.note = this.$store.getters.getNote;
+    this.importance = this.$store.getters.getImportance;
   },
   methods: {
     addNote() {
-      this.$emit("addNote", this.note);
+      if (this.note.title === "") {
+        this.$store.dispatch("changeMessage", "title can`t be blank!");
+        return false;
+      }
+
+      this.$store.dispatch("addNote", this.note);
+
+      this.$store.dispatch("changeMessage", null);
+      this.note.title = "";
+      this.note.descr = "";
+      this.note.importance = "standart";
     }
   }
 };
